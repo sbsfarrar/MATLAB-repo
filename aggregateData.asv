@@ -1,0 +1,141 @@
+function [aggregateStructure] = aggregateData(newFullTable, aggregateTable, j)
+%aggregateData will take the input character array of newly processed individual
+% excel files, read it, and generate the aggregated structure from the individual
+%sphere data files that are chosen to be aggregated
+%naturally, these files will be overwritten
+%OUTPUT aggregateStructure will be the aggregated data in a structure for
+%these files to then be written
+
+%use strings to read excel file
+%find files that are to be included in aggregate data
+%find those files' processed file data and use that to create aggregated
+%data for the selected vessel folder. 
+
+aggregateStructure.VesselID = newFullTable.VesselID(j-1); 
+aggregateStructure.Date = newFullTable.Date(j-1);
+aggregateStructure.Count = height(aggregateTable);
+aggregateStructure.Max = max(aggregateTable.EquivDiameter);
+aggregateStructure.Min = min(aggregateTable.EquivDiameter);
+aggregateStructure.Mean = mean(aggregateTable.EquivDiameter);
+aggregateStructure.Median = median(aggregateTable.EquivDiameter);
+aggregateStructure.Std = std(aggregateTable.EquivDiameter);   
+
+%find mode bin size
+[N, edges] = histcounts(aggregateTable.Diameters,40);
+maxIndex = find(N==max(N));
+modeBin = [];
+if numel(maxIndex) > 1
+edgeStore = zeros(numel(maxIndex)*2, 1);
+for k = 1:numel(maxIndex)
+    edgeStore(k) = edges(maxIndex(k));
+    edgeStore(k+1) = edges(maxIndex(k)+1);
+    if k == 1                         
+        modeBin = [modeBin [num2str(edgeStore(k)) '-' num2str(edgeStore(k+1))]];
+    else
+        modeBin = [modeBin ', ' [num2str(edgeStore(k)) '-' num2str(edgeStore(k+1))]];
+    end
+end
+else
+edge1 = edges(maxIndex);
+edge2 = edges(maxIndex+1);
+aggregateStructure.modeBin = [num2str(edge1) '-' num2str(edge2)];
+end
+aggregateStructure.AverageCircularity = mean(aggregateTable.Circularity);
+aggregateStructure.AverageSolidity = mean(aggregateTable.Solidity);
+aggregateStructure.AverageEccentricity = mean(aggregateTable.Eccentrcity);
+aggregateStructure.Polydispersity = (aggregateStructure.Std/aggregateStructure.Mean)^2;
+%then, clear aggregateTable and assign new aggregateFile to it
+
+%find the mat files of the corresponding images that are to be included in
+%the aggregate data
+
+end
+    
+                            %%%write aggregate excel file
+                            newFolderPath = [app.pwdGlobal '\Microscope Images\'];
+                            newFolderName = app.processedVesselFolderName;
+                            if isfolder([newFolderPath newFolderName]) == 0
+                                mkdir(newFolderPath,newFolderName);
+                            end
+                            %get vessel letter
+                            vesselLetter = regexp(aggregateIDStore.ID(i-1),'([A-Z]+)','match');
+                            vesselLetter = vesselLetter{1};
+                            excelFileName = [vesselLetter '-Aggregated Data'];
+                            excelPathLocal = [newFolderPath newFolderName '\' excelFileName '.xlsx'];
+                            sphereTable = struct2table(app.aggregateSphereStats);
+                            if isfile(excelPathLocal) == 1
+                                writetable(sphereTable, excelPathLocal, 'WriteMode', 'Append','WriteVariableNames',false);
+                            else
+                                writetable(sphereTable, excelPathLocal);
+                            end
+    
+                            app.aggregateSphereStats = [];
+                            app.aggregateDiameters = [];
+                            app.aggregateCircularities = []; 
+                            app.aggregateSolidities = []; 
+                            app.aggregateEccentricities = []; 
+                        else
+                            %this is where we will write the aggregate excel file, reset
+                            %structure, then apply new sphere stats
+                            %new exportable excel file
+                            app.aggregateSphereStats.VesselID = aggregateIDStore.ID(i-1); 
+                            app.aggregateSphereStats.Date = aggregateIDStore.Date(i-1);
+                            app.aggregateSphereStats.Count = numel(app.aggregateDiameters);
+                            app.aggregateSphereStats.Max = max(app.aggregateDiameters);
+                            app.aggregateSphereStats.Min = min(app.aggregateDiameters);
+                            app.aggregateSphereStats.Mean = mean(app.aggregateDiameters);
+                            app.aggregateSphereStats.Median = median(app.aggregateDiameters);
+                            app.aggregateSphereStats.Std = std(app.aggregateDiameters);
+    
+                            %find mode bin size
+                            [N, edges] = histcounts(app.aggregateDiameters,20);
+                            maxIndex = find(N==max(N));
+                            modeBin = [];
+                            if numel(maxIndex) > 1
+                                edgeStore = zeros(numel(maxIndex)*2, 1);
+                                for j = 1:numel(maxIndex)
+                                    edgeStore(j) = edges(maxIndex(j));
+                                    edgeStore(j+1) = edges(maxIndex(j)+1);
+                                    if j == 1                         
+                                        modeBin = [modeBin [num2str(edgeStore(j)) '-' num2str(edgeStore(j+1))]];
+                                    else
+                                        modeBin = [modeBin ', ' [num2str(edgeStore(j)) '-' num2str(edgeStore(j+1))]];
+                                    end
+                                end
+                                app.SphereStats.modeBin = modeBin;
+                            else
+                                edge1 = edges(maxIndex);
+                                edge2 = edges(maxIndex+1);
+                                app.aggregateSphereStats.modeBin = [num2str(edge1) '-' num2str(edge2)];
+                            end
+                            
+                            app.aggregateSphereStats.AverageCircularity = mean(app.aggregateCircularities);
+                            app.aggregateSphereStats.AverageSolidity = mean(app.aggregateSolidities);
+                            app.aggregateSphereStats.AverageEccentricity = mean(app.aggregateEccentricities);
+                            app.aggregateSphereStats.Polydispersity = (app.aggregateSphereStats.Std/app.aggregateSphereStats.Mean)^2;
+    
+                            %%%write aggregate excel file
+                            newFolderPath = [app.pwdGlobal '\Microscope Images\'];
+                            newFolderName = app.processedVesselFolderName;
+                            if isfolder([newFolderPath newFolderName]) == 0
+                                mkdir(newFolderPath,newFolderName);
+                            end
+                            %get vessel letter
+                            vesselLetter = regexp(aggregateIDStore.ID(i-1),'([A-Z]+)','match');
+                            vesselLetter = vesselLetter{1};
+                            excelFileName = [vesselLetter '-Aggregated Data'];
+                            excelPathLocal = [newFolderPath newFolderName '\' excelFileName '.xlsx'];
+                            sphereTable = struct2table(app.aggregateSphereStats);
+                            if isfile(excelPathLocal) == 1
+                                writetable(sphereTable, excelPathLocal, 'WriteMode', 'Append','WriteVariableNames',false);
+                            else
+                                writetable(sphereTable, excelPathLocal);
+                            end
+                            app.aggregateSphereStats = [];
+                            app.aggregateDiameters = [];
+                            app.aggregateCircularities = []; 
+                            app.aggregateSolidities = []; 
+                            app.aggregateEccentricities = []; 
+                        end
+                    end
+                end
