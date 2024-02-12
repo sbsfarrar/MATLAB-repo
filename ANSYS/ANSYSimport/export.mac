@@ -1,0 +1,62 @@
+! ANSYS APDL script for exporting the FE model geometry
+! by M.M. Pedersen, Aarhus University, Denmark, 2018.
+! 
+! USAGE: 
+! - Workbench: add "Commands (APDL)" block under Solution and paste in this script.
+! - Classic: run script by clicking "File>Run input from..." and selecting this file.
+!
+! OUTPUT: 
+! all outputs will be printed to file "model.txt" located in the ANSYS working folder:
+! C:\...\ANSYS_WORK_DIR\JOBNAME_files\dp0\SYS\MECH\model.txt
+! where "ANSYS_WORK_DIR" and "JOBNAME" are names chosen by yourself.
+! for multiple analyses, select the appropriate sub-dir instead of "SYS", e.g. "SYS-1".
+
+
+/POST1
+FILE,file,rst
+set,1
+
+! select only supported elements: SOLID186, SOLID187, SOLID185
+ALLSEL
+ESEL,S,ENAME,,42	! PLANE42   
+ESEL,A,ENAME,,82  	! PLANE82
+ESEL,A,ENAME,,182   ! PLANE182
+ESEL,A,ENAME,,183   ! PLANE183
+
+ESEL,A,ENAME,,63	! SHELL63
+ESEL,A,ENAME,,181	! SHELL181
+ESEL,A,ENAME,,281	! SHELL281   
+
+ESEL,A,ENAME,,185	! SOLID185 
+ESEL,A,ENAME,,186	! SOLID186   
+ESEL,A,ENAME,,187	! SOLID187   
+
+! select only the nodes of these elements, and just the corner nodes
+NSLE
+NSLE,R,CORNER
+
+
+
+*cfopen,model.txt
+
+! list element types
+*GET,net,ETYP,1,NUM,COUNT
+*DO,i,1,net
+	*GET,ETname,ETYP,i,ATTR,ENAM
+*VWRITE,'ET ',i,' ',ETname
+(A3, F4.0, A1, F4.0)
+*ENDDO
+*cfclose
+
+
+! format output for nodes, elements and stress listings
+/PAGE, 1E9,, 1E9,,  ! disable headers
+/FORMAT, , ,14,5, , ! fix floating point format
+/HEADER, off, off, off, off, on, off ! disable summaries
+
+/OUTPUT,model,txt,,APPEND  ! switch output to file 'model.txt'
+NLIST,,,,COORD		! print nodes w. coordinates
+ELIST				! print element connectivity table
+PRNSOL,S			! print all stress components
+PRNSOL,U			! print all displacements
+/OUTPUT
