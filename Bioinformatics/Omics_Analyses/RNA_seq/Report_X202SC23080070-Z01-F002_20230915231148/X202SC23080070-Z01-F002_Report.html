@@ -1,0 +1,419 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" >
+<html>
+<head>
+<TITLE> QC analysis report</TITLE>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="src/css/jquery-ui.css" />
+<link rel="stylesheet" href="src/css/bootstrap-4.3.1.min.css" />
+<link rel="stylesheet" href="src/css/jquery.tocify.css" />
+<link rel="stylesheet" href="src/css/style.css"/>
+<link rel="stylesheet" href="src/css/base.css"/>
+<link rel="stylesheet" href="src/css/gallery.css"/>
+<script src="src/js/jquery-3.3.1.min.js" type="text/javascript"></script>
+<script src="src/js/jquery-ui.min.js" type="text/javascript"></script>
+<script src="src/js/jquery.tocify.min.js" type="text/javascript"></script>
+<script src="src/js/bootstrap-4.3.1.min.js" type="text/javascript"></script>
+<script src="src/js/scrollTop.js" type="text/javascript"></script>
+<script type="text/javascript">
+	$(function () {
+		var options = {
+			selectors: "h2,h3,h4,h5",
+			theme: "bootstrap",
+			scrollTo: "60"
+		};
+		var toc = $("#toc").tocify(options).data("toc-tocify");
+	});
+</script>
+<script type="text/javascript">
+function trans(img_div_id) {
+img_div = $("#" + img_div_id)
+img = $("#" + img_div_id + " img").first();
+if (img_div.hasClass("fullscreen-div")) {
+img_div.removeClass("fullscreen-div");
+img.removeClass("fullscreen-img");
+}
+else {
+img_div.addClass("fullscreen-div");
+img.addClass("fullscreen-img");
+}
+}
+function filter_display() {
+return $(this).css("display") != "none";
+}
+function show_default() {
+var list_group_id = "#" + $(this).attr("id");
+if ($(list_group_id + " a.active").css("display") == "none") {
+var list_tab = $(list_group_id + " a.active");
+var pan_id = list_tab.attr("href");
+$(pan_id).removeClass("active show");
+list_tab.removeClass("active");
+}
+if ($(list_group_id + " a.active").filter(filter_display).length == 0) {
+$(list_group_id + " a").filter(filter_display).first().tab("show");
+}
+}
+$.fn.show_default = show_default
+function next(botton_id) {
+var present_tab = $("#" + botton_id.replace("_button_next", "_list-tab") + " .active").first();
+while (present_tab.next().length == 1) {
+if (present_tab.next().css("display") != "none") {
+present_tab.next().tab("show");
+break;
+}
+else {
+present_tab = present_tab.next();
+}
+}
+}
+function prev(botton_id) {
+var present_tab = $("#" + botton_id.replace("_button_prev", "_list-tab") + " .active").first();
+while (present_tab.prev().length == 1) {
+if (present_tab.prev().css("display") != "none") {
+present_tab.prev().tab("show");
+break;
+}
+else {
+present_tab = present_tab.prev();
+}
+}
+}
+$(document).ready(function () {
+$(".form-control").on("keyup", function () {
+var value = $(this).val().toLowerCase();
+var input_box_id = "#" + $(this).attr("id");
+var list_group_id = input_box_id.replace("_InputList", "_list-tab");
+$(list_group_id + " a").filter(function () {
+$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+});
+$(list_group_id).show_default();
+});
+$(".list-group").each(show_default);
+});
+</script>
+</head>
+<body>
+<div id="toc" class="tocify">
+</div>
+	<div style="position:fixed; top:0; left:0; width:100%; z-index:1000;">
+		<table width="100%" height="50px" border="0" cellpadding="5" cellspacing="0"
+			style="background:#F3F3F3; border-bottom:1px solid #eee;border-top: none;background-image:-moz-linear-gradient(top,#EEEEEE,#FFFFFF); background-image:-webkit-gradient(linear,left top,left bottom,color-stop(0,#EEEEEE), color-stop(1,#FFFFFF));filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#EEEEEE', endColorstr='#FFFFFF', GradientType='0')">
+			<tr height="86%">
+				<td width='1%'></td>
+				<td><img src="src/images/logo1.png"></td>
+				<td>
+					<div style="margin:5px;border-left:1px solid #DCDCDC;height:30px"></div>
+				</td>
+				<td width="20%"></td>
+				<td width="15%"></td>
+				<td width="25%"
+					style="text-align:right;padding:0px;margin:0px;color:black;font-size:14px;font-weight:50;">
+					<br><a href="mailto:op-rna@novogene.com" target="black"
+						style="text-decoration:none;color:black;font-size:14px;font-weight:50;">
+						<a></td>
+				<td width="1%"></td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<!--------------------------标题---------------------------------->
+<div id="main">
+<br><h1>QC Analysis Report</h1></br>
+<table class="gy">
+<tr>
+
+<th>Contract Information</th>
+<th>Contract Content</th>
+
+</tr>
+
+<tr>
+
+<td>Contract ID</td>
+
+<td>H202SC23080070</td>
+
+</tr>
+
+<tr>
+
+<td>Contract Name</td>
+
+<td>TJ-US-Aruna-4-Human-exosome smallRNAseq-20M-WBI-NVUS2023072657</td>
+
+</tr>
+
+<tr>
+
+<td>Batch ID</td>
+
+<td>X202SC23080070-Z01-F002</td>
+
+</tr>
+
+<tr>
+
+<td>Report Time</td>
+
+<td>2023-09-15</td>
+
+</tr>
+
+</table>
+<br /><br />
+<p class="head"><a href="#home" title = "Back to homepage"><img class="logo" align="left" src="src/images/logo.png" /></a>
+<a name="Library Preparation and Sequencing">Novogene Co., Ltd</a>
+<hr />
+</p><br />
+<h2>A. Library Preparation and Sequencing</h2>
+<p class="paragraph">From the RNA samples to the final data, each step (including sample test, library preparation, sequencing) would influence the data's quality. The quality of data would have direct impacts on the analysis results. To guarantee the reliability of the data, quality control was performed on each step of the procedure.
+The workflow is as follprojectows:</p>
+<br />
+<p class="center">
+  <img src="src/images/pipeline.png" width="600" height="450" />
+</p>
+<br/>
+<h3>1 Sample Quality Control</h3>
+<p class="paragraph">Please refer to QC report for methods of sample quality control.</p>
+<p class="paragraph"></p>
+
+<h3>2 Library Construction, Quality Control and Sequencing</h3>
+<p class="paragraph">Briefly, 3’ and 5’ adaptors were ligated to 3’ and 5’ end of small RNA, respectively. Then the first strand cDNA was synthesized after hybridazition with reverse transcription primer. The double-stranded cDNA library was generated through PCR enrichment. After purification and size selection, libraries with insertions between 18~40 bp were ready for sequencing with SE50. Following is the workflow of library construction:</p>
+<br />
+<center><img class="middle" src="src/images/exp_library.png" width="200" height="450"/></center>
+<br/>
+<p class="paragraph">The library was checked with Qubit and real-time PCR for quantification and bioanalyzer for size distribution detection. Quantified libraries will be pooled and sequenced on Illumina platforms, according to effective library concentration and data amount required.</p>
+<p class="head"><a href="#home" title = "Back to homepage"><img class="logo" align="left" src="src/images/logo.png" /></a>
+<a name="Raw Data">Novogene Co., Ltd</a>
+<hr />
+</p><br />
+<h2>B. Results and Instructions</h2>
+<h3>1 Data Quality Control</h3>
+<h4>1.1 Error Rate Distribution</h4>
+<p class="paragraph">"e" represents sequencing error rate, "Q<sub>phred</sub>" represents base quality values of Illunima , the Q<sub>phred</sub>=-10log<sub>10</sub>(e). Base Quality and Phred score relationship in Illumina Casava 1.8 as follows:</p>
+
+<table class="gy">
+<tr><th>Phred score</th><th>Base Calling Wrong rate</th><th>Base Calling Correct rate</th><th>Q-score</th></tr>
+<tr><td>10</td><td>1/10</td><td>90%</td><td>Q10</td></tr>
+<tr><td>20</td><td>1/100</td><td>99%</td><td>Q20</td></tr>
+<tr><td>30</td><td>1/1000</td><td>99.9%</td><td>Q30</td></tr>
+<tr><td>40</td><td>1/10000</td><td>99.99%</td><td>Q40</td></tr>
+</table></p>
+
+<p class="paragraph">For RNA-seq technology, sequencing error rate distribution has two features, see <strong>Fig.1</strong>: </p>
+<p class="paragraph">(1) Error rate grows with sequenced reads extension for the consumption of sequencing reagent. The phenomenon is common in the Illumina high-throughput sequencing platform(Erlich and Mitra, 2008; Jiang et al. 2011). </p>
+<p class="paragraph">(2) The first six bases have a relatively high error rate. The reason is incomplete binding of the random hex-primers and RNA template in cDNA synthesis (Jiang et al.2011). In general, a single base error rate should be lower than 1%.</p>
+<br />
+
+<p class="center">
+<div class="row gallery-row">
+<div class="col-1">
+<div id="gallery_figure_error_button_prev" class="button_prev" onclick="prev(this.id)"><svg viewbox="0 0 16000 16000" class="svg_prev"><circle class="c" cx="8000" cy="8000" r="6080"></circle><polygon class="a" points="8789.5,4902.8 8789.5,5846.4 6801.7,8000 8789.5,10253.6 8789.5,11097.2 5930.5,8000 "></polygon></svg></div>
+</div>
+<div class="col-6">
+<div class="tab-content" id="gallery_figure_error_nav-tabContent">
+
+
+
+<div class="tab-pane fade" id="gallery_figure_error_pane_DS3_30SEP" role="tabpanel" aria-labelledby="gallery_figure_error_list_DS3_30SEP" onclick="trans(this.id)"><img class="img-gallery" src="./src/pictures/Error/DS3_30SEP.Error.png" /></div>
+
+
+
+<div class="tab-pane fade" id="gallery_figure_error_pane_DS3_20JAN" role="tabpanel" aria-labelledby="gallery_figure_error_list_DS3_20JAN" onclick="trans(this.id)"><img class="img-gallery" src="./src/pictures/Error/DS3_20JAN.Error.png" /></div>
+
+
+
+<div class="tab-pane fade" id="gallery_figure_error_pane_DS3_16JUN" role="tabpanel" aria-labelledby="gallery_figure_error_list_DS3_16JUN" onclick="trans(this.id)"><img class="img-gallery" src="./src/pictures/Error/DS3_16JUN.Error.png" /></div>
+
+
+
+<div class="tab-pane fade" id="gallery_figure_error_pane_DS3_13JUL" role="tabpanel" aria-labelledby="gallery_figure_error_list_DS3_13JUL" onclick="trans(this.id)"><img class="img-gallery" src="./src/pictures/Error/DS3_13JUL.Error.png" /></div>
+
+
+
+</div>
+</div>
+<div class="col-1">
+<div id="gallery_figure_error_button_next" class="button_next" onclick="next(this.id)"><svg viewbox="0 0 16000 16000" class="svg_next"><circle class="c" cx="8000" cy="8000" r="6080"></circle><polygon class="a" points="7210.5,4902.8 7210.5,5846.4 9198.3,8000 7210.5,10253.6 7210.5,11097.2 10069.5,8000 "></polygon></svg></div>
+</div>
+<div class="col-4">
+<input class="form-control" id="gallery_figure_error_InputList" type="text" placeholder="Search..">
+<div class="list-group" id="gallery_figure_error_list-tab" role="tablist">
+
+
+
+<a class="list-group-item list-group-item-action" id="gallery_figure_error_list_DS3_30SEP" data-toggle="list" href="#gallery_figure_error_pane_DS3_30SEP" role="tab" aria-controls="DS3_30SEP">DS3_30SEP</a>
+
+
+
+<a class="list-group-item list-group-item-action" id="gallery_figure_error_list_DS3_20JAN" data-toggle="list" href="#gallery_figure_error_pane_DS3_20JAN" role="tab" aria-controls="DS3_20JAN">DS3_20JAN</a>
+
+
+
+<a class="list-group-item list-group-item-action" id="gallery_figure_error_list_DS3_16JUN" data-toggle="list" href="#gallery_figure_error_pane_DS3_16JUN" role="tab" aria-controls="DS3_16JUN">DS3_16JUN</a>
+
+
+
+<a class="list-group-item list-group-item-action" id="gallery_figure_error_list_DS3_13JUL" data-toggle="list" href="#gallery_figure_error_pane_DS3_13JUL" role="tab" aria-controls="DS3_13JUL">DS3_13JUL</a>
+
+
+
+</div>
+</div>
+</div>
+
+
+<p class="name_fig"><strong>Fig.1 Error Rate Distribution</strong></p>
+<p class="premark">Horizontal axis for reads position, vertical axis for single base error rate. </p>
+
+<!----------------------------------------- Quality Control  -------------------------------------->
+
+<p class="head"><a href="#home" title = "Back to homepage"><img class="logo" align="left" src="src/images/logo.png" /></a>
+<a name="">Novogene Co., Ltd</a>
+<hr />
+</p><br />
+<h4>1.2 Data Quality Summary</h4>
+<p class="paragraph">Data Quality Summary: <strong>Table 1</strong>. </p> 
+<br />
+<p class="name">Table 1 Data Quality Summary</p>
+<p class="center">
+<div style="overflow-x: auto">
+<table class="gy">
+<thead><tr><th>Sample</th><th>Raw reads</th><th>Raw data(G)</th><th>Error(%)</th><th>Q20(%)</th><th>Q30(%)</th><th>GC(%)</th></tr></thead>
+<tbody>
+
+        <tr><td>DS3_30SEP</td><td>16725437</td><td>0.8</td><td>0.01</td><td>99.32</td><td>97.61</td><td>56.90</td></tr>
+
+        <tr><td>DS3_20JAN</td><td>14910662</td><td>0.7</td><td>0.01</td><td>99.27</td><td>97.19</td><td>57.20</td></tr>
+
+        <tr><td>DS3_16JUN</td><td>19460057</td><td>1.0</td><td>0.01</td><td>99.27</td><td>97.29</td><td>58.48</td></tr>
+
+        <tr><td>DS3_13JUL</td><td>12764015</td><td>0.6</td><td>0.01</td><td>99.23</td><td>97.14</td><td>57.75</td></tr>
+
+</tbody>
+</table>
+</div>
+</p>
+<p class="tremark">Sample: sample ID. <br />
+Raw reads: Four rows as a unit to calculate the sequence number of each raw data file. <br />
+Raw bases: (Number of sequences) * (sequence length), use G for unit.<br />
+Error rate: base error rate.<br />
+Q20, Q30: (Base number of Phred value &gt 20(&gt 30)) / (Total base number).<br />
+GC content: (G&C base number) / (Total base number).<br />
+</p>
+
+<!----------------------------------------- Data Filtration -------------------------------------->
+<p class="head"><a href="#home" title = "Back to homepage"><img class="logo" align="left" src="src/images/logo.png" /></a>
+<a name="">Novogene Co., Ltd</a>
+<hr />
+</p><br />
+<h4>1.3 Data Filtration</h4>
+<p class="paragraph">The unpurified raw data are 5' primer comtains,no insert tags, oversized insertion, low quality reads, poly A tags and small tags. We will get rid of some contaminant reads from the fq file and get the final clean reads. </p>
+<p class="paragraph">The data is processed by the following steps:</p>
+<p class="paragraph">(1) Get rid of reads of which more than 50% bases has a base quality score no more than 5;</p>
+<p class="paragraph">(2) Get rid of reads containing N > 10%;</p>
+<p class="paragraph">(3) Get rid of reads with 5' primer contaminants;</p>
+<p class="paragraph">(4) Get rid of reads without 3' primer and reads without the insert tag;</p>
+<p class="paragraph">(5) Trim 3' primer sequence;</p>
+<p class="paragraph">(6) Get rid of reads with polyA/T/G/C.</p>
+<br />
+<p class="paragraph">Small RNA adapte sequences:</p>
+<p class="seq">RNA 5’ Adapter (RA5), part:<br />
+5'-GTTCAGAGTTCTACAGTCCGACGATC-3'<br />
+RNA 3' Adapter (RA3), part: <br />
+5'-AGATCGGAAGAGCACACGTCT-3'</p>
+<br />
+<p class="name">Table 2 Data filtering summary</p>
+<p class="center">
+<div style="overflow-x: auto">
+<table class="gy">
+<thead><tr><th>Sample</th><th>total_reads</th><th>N% &gt; 10%</th><th>low quality</th><th>5_adapter_contamine</th><th>3_adapter_null or insert_null</th><th>with ployA/T/G/C</th><th>clean reads</th></tr></thead>
+<tbody>
+
+        <tr><td>DS3_30SEP</td><td>16725437 (100.00%)</td><td>0 (0.00%)</td><td>0 (0.00%)</td><td>8957 (0.05%)</td><td>776711 (4.64%)</td><td>41890 (0.25%)</td><td>15897879 (95.05%)</td></tr>
+
+        <tr><td>DS3_20JAN</td><td>14910662 (100.00%)</td><td>516 (0.00%)</td><td>0 (0.00%)</td><td>4396 (0.03%)</td><td>228369 (1.53%)</td><td>23128 (0.16%)</td><td>14654253 (98.28%)</td></tr>
+
+        <tr><td>DS3_16JUN</td><td>19460057 (100.00%)</td><td>653 (0.00%)</td><td>0 (0.00%)</td><td>7597 (0.04%)</td><td>247062 (1.27%)</td><td>59783 (0.31%)</td><td>19144962 (98.38%)</td></tr>
+
+        <tr><td>DS3_13JUL</td><td>12764015 (100.00%)</td><td>392 (0.00%)</td><td>0 (0.00%)</td><td>3532 (0.03%)</td><td>152249 (1.19%)</td><td>33945 (0.27%)</td><td>12573897 (98.51%)</td></tr>
+
+</tbody>
+</table>
+</div>
+</p>
+<p class="tremark">Note:<br />
+(1) Sample: Sample id.<br />
+(2) total_reads: Total sequenced reads.<br />
+(3) N% > 10%: Percentage of reads with N > 10%.<br />
+(4) low quality: Percentage of low quality reads.<br />
+(5) 5_adapter_contamine: Percentage of reads with 5'adapter contamine.<br />
+(6) 3_adapter_null or insert_null: Percentage of reads with 3'adapter null or insert null.<br />
+(7) with ployA/T/G/C: Percentage of reads with ployA/T/G/C.<br />
+(8) clean reads: Total clean reads and its percentage accounted for raw reads.</p>
+<br/>
+<p class="head"><a href="#home" title="返回首页"><img class="logo" align="left" src="src/images/logo.png" /></a>
+<a name="part1">Novogene Co., Ltd</a>
+<hr />
+</p><br />
+<h2>C. Appendix</h2>
+<h3>1 Introduction of Sequencing Data Format</h3>
+<p class="paragraph">The original raw data from Illumina platform are transformed to Sequenced Reads, known as Raw Data or RAW Reads, by base calling. Raw data are recorded in a FASTQ file, which contains sequencing reads and corresponding sequencing quality. Every read in FASTQ format is stored in four lines, as indicated below (Cock P.J.A. et al. 2010):</p>
+
+<p class="seq">
+@HWI-ST1276:71:C1162ACXX:1:1101:1208:2458 1:N:0:CGATGT&nbsp;&nbsp;&nbsp;<br />
+NAAGAACACGTTCGGTCACCTCAGCACACTTGTGAATGTCATGGGATCCAT<br />
++<br />
+#55???BBBBB?BA@DEEFFCFFHHFFCFFHHHHHHHFAE0ECFFD/AEHH<br />
+</p>
+<p class="paragraph">Line 1 begins with a '@' character and is followed by the Illumina Sequence Identifiers and an optional description. The details of Illumina sequence identifier are listed in the table below. </P>
+<table class="gy">
+<tr><th>Identifier</th><th>Meaning</th></tr>
+<tr><td>HWI-ST1276</td><td>Instrument – unique identifier of the sequencer </td></tr>
+<tr><td>71</td><td>Run number – Run number on instrument</td></tr>
+<tr><td>C1162ACXX</td><td>Flow Cell ID – ID of flow cell</td></tr>
+<tr><td>1</td><td>Lane Number – positive integer</td></tr>
+<tr><td>1101</td><td>Tile Number – positive integer</td></tr>
+<tr><td>1208</td><td>X – x coordinate of the spot. Integer which can be negative</td></tr>
+<tr><td>2458</td><td>Y – y coordinate of the spot. Integer which can be negative</td></tr>
+<tr><td>1</td><td>Read number. 1 can be single read or Read 2 of paired-end.</td></tr>
+<tr><td>N</td><td>Y if the read is filtered (did not pass), N otherwise.</td></tr>
+<tr><td>0</td><td>Control number - 0 when none of the control bits are on, otherwise it is an even number</td></tr>
+<tr><td>CGATGT</td><td>Illumina index sequences</td></tr>
+</table>
+
+<p class="paragraph">Line 2 is the raw sequence of the read. </p>
+<p class="paragraph">Line 3 begins with a '+' character and is optionally followed by the same sequence identifiers and descriptions as in Line 1. </p>
+<p class="paragraph">Line 4 encodes the quality values for the bases in Line 2 and contains the same number of characters as the bases in the read (Cock, 2009.).</p>
+<br />
+<h3>2 Explanation of Sequencing Data Related</h3>
+<p class="paragraph">(1) The data delivered is a compressed file in format of '.fq.gz'. Before data delivery, we will calculate the md5 value of each compressed file and
+please check it when you get the data. There are two ways to check the md5 value. In Linux environment, you can use 'md5sum -c <*md5.txt>' command under the data directory. In Windows environment, you can use 
+a calibration tool e.g. hashmyfiles. If the md5 value of compressed file doesn't match with the one we provide in md5 file in data directory, the file may have been damaged during the transmitting procedure.<br />
+
+<p class="paragraph">(2) For paired-end (PE) sequencing, every sample should have 2 data flies (read1 file and read2 file). These 2 files have the same line number, you could use 'wc -l' command to check the line number in Linux environment.
+ The line number divide by 4 is the number of reads.<br />
+
+<p class="paragraph">(3) The data size is the space occupied by the data in the hard disk. It's related to the format of the disk and compression ratio. And it has no influence on the quantity of sequenced bases. 
+Thus, the size of read1 file may be unequal to the size of read2 file.<br />
+
+<p class="paragraph">(4) When customer’s samples need large amount of data e.g. whole genome sequencing data, we would use separate-lane sequencing strategy to make sure the quality of data, so it's possible that one sample has several parts sequencing data. 
+For example, if sample 1 has two read1 files, sample1_L1_1.fq.gz and sample1_L2_1.fq.gz, that means this sample was sequenced on different lanes.<br />
+
+<p class="paragraph">(5) If we agree to deliver the clean data before the project starts, we will filter the data strictly according to the standard to obtain high quality clean data which can be used for further research and paper writing. We will discard the paired reads in the following situation: when either one read contains adapter contamination; when either one read contains more than 10 percent uncertain nucleotides; when either one read contains more than 50 percent low quality nucleotides (base quality less than 5). The data analysis results based on the clean data that is filtered by this standard can be approved by high level magazines (Yan L.Y. et al . 2013). If you want to get more information, please refer to the official website of Novogene (www.novogene.com). <br />
+
+<p class="paragraph">(6) The Index is normally in the middle of the adapter during the process of experiment and sequencing except the special library. We can get the Read1 sequence and Read2 sequence according to the Index read. They are all the sequence of samples so that it's no necessary to dispose the beginning and end of reads in the downstream analysis (e.g. mapping). <br />
+
+<p class="paragraph">(7) 30 days after the data delivery, we will delete outdated data. So please keep your data properly. If you have any questions or concerns, please contact us as soon as possible.<br />
+<br />
+<h3>3 References</h3>
+<p class=ref>
+Cock P.J.A. et al (2010). The Sanger FASTQ file format for sequences with quality scores, and the Solexa/Illumina FASTQ variants. Nucleic acids research 38, 1767-1771. <br /><br />
+Hansen K.D. et al (2010). Biases in Illumina transcriptome sequencing caused by random hexamer priming. Nucleic acids research 38, e131-e131. <br /><br />
+Erlich Y.et al (2008). Alta-Cyclic: a self-optimizing base caller for next-generation sequencing.Nature Methods,5,679-682.  <br /><br />
+Jiang L.C. et al (2011). Synthetic spike-in standards for RNA-seq experiments. Genome research 21, 1543-1551. <br /><br />
+Yan L.Y. et al (2013). Single-cell RNA-Seq profiling of human preimplantation embryos and embryonic stem cells. Nat Struct Mol Biol. <br /><br />
+</p>
+</body>
+</html>
+
